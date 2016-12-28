@@ -1,0 +1,5 @@
+tbody{
+  overflow-x: auto !important;
+  overflow-y:auto!important;
+  height:100%!important;
+}
