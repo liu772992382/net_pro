@@ -2,28 +2,37 @@ var dom = document.getElementById("main");
 var myChart = echarts.init(dom);
 var app = {};
 option = null;
-var date = [0];
+var date = [];
 var now = 0;
-var data = [0];
+var data = [];
 var data_last = 0;
+
+for (var i = 1; i < 100; i++) {
+ date.push(0);
+ data.push(0);
+}
 
 function addData(shift) {
     now += 1;
    date.push(now);
    $.get('/getData').done(function(gdata){
-     data.push(gdata - data_last);
-     data_last = gdata;
+     gdata = $.parseJSON(gdata);
+     console.log(gdata['result'] - data_last);
+     data.push(gdata['result'] - data_last);
+     data_last = gdata['result'];
    });
+   console.log(date, data);
    // data.push(Math.random());
    if (shift) {
-       date.shift();
-       data.shift();
+    //  console.log(date, data);
+     date.shift();
+     data.shift();
+    //  console.log(date, data);
+
    }
   }
 
-for (var i = 1; i < 100; i++) {
- addData();
-}
+
 
 option = {
  xAxis: {
