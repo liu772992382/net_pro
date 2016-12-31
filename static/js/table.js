@@ -1,28 +1,13 @@
 
 var $table = $('#table_body');
 var $table_summary = $('#table_summary');
+var $table_fields = $('#table_fields');
 var $data_num = 0;
 var $button = $('#button');
 var $cors = true;
 var $data_info = {};
 var $last_field;
-$table_summary.on('click-row.bs.table', function(row, $element, field){
-  // console.log($element, row, field);
-  if($last_field)
-    $last_field.removeClass('active');
-  $table.bootstrapTable('load', $data_info[$element.id]);
-  $last_field = field;
-  $last_field.addClass('active');
-});
-
-$button.click(function(){
-  $cors = !$cors;
-  console.log($cors);
-  if(!$cors)
-    $button.addClass('active');
-  else $button.removeClass('active');
-})
-
+var $last_sum;
 var dom = document.getElementById("main");
 var myChart = echarts.init(dom);
 var app = {};
@@ -36,20 +21,6 @@ for (var i = 1; i < 50; i++) {
  date.push(0);
  data.push(0);
 }
-
-function addData(shift, get_data) {
-  console.log(shift, get_data, data_last, get_data - data_last);
-  now += 1;
-  date.push(now);
-  data.push(get_data - data_last);
-  data_last = get_data;
-  // data.push(Math.random());
-  if (shift) {
-     date.shift();
-     data.shift();
-  }
-}
-
 
 option = {
  xAxis: {
@@ -76,14 +47,51 @@ option = {
  ]
 };
 
+$table_summary.on('click-row.bs.table', function(row, $element, field){
+  // console.log($element, row, field);
+  if($last_field)
+    $last_field.removeClass('active');
+  $table.bootstrapTable('load', $data_info[$element.id]);
+  $last_field = field;
+  $last_field.addClass('active');
+});
 
+$table.on('click-row.bs.table', function(row, $element, field){
+  // console.log($element, row, field);
+  if($last_sum)
+    $last_sum.removeClass('active');
+  console.log(row, $element, field);
+  $table_fields.bootstrapTable('load', $element.info);
+  $last_sum = field;
+  $last_sum.addClass('active');
+});
 
+$button.click(function(){
+  $cors = !$cors;
+  console.log($cors);
+  if(!$cors)
+    $button.addClass('active');
+  else $button.removeClass('active');
+})
+
+function addData(shift, get_data) {
+  // console.log(shift, get_data, data_last, get_data - data_last);
+  now += 1;
+  date.push(now);
+  data.push(get_data - data_last);
+  data_last = get_data;
+  // data.push(Math.random());
+  if (shift) {
+     date.shift();
+     data.shift();
+  }
+}
 
 setInterval(function () {
   if($cors){
     $.get('/getData').done(function(gdata){
       gdata = $.parseJSON(gdata);
-      console.log(gdata);
+      // console.log(gdata);
       if($data_num >= 2000){
         $table_summary.bootstrapTable('removeAll');
         $data_num = 0;

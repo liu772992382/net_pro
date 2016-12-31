@@ -30,13 +30,27 @@
              onClickRow="true">
           <thead>
           <tr>
-              <th data-field="summary">Summary</th>
+              <th data-field="time">Time</th>
+              <th data-field="src">Source</th>
+              <th data-field="dst">Destination</th>
+              <th data-field="prot">Protocol</th>
+              <th data-field="info">Information</th>
           </tr>
           </thead>
       </table>
       <table id="table_body"
            data-toggle="table"
-           data-toolbar="#toolbar"
+           data-height="300"
+           onClickRow="true">
+        <thead>
+        <tr>
+            <th data-field="prot">Protocol</th>
+            <th data-field="length">Length</th>
+        </tr>
+        </thead>
+      </table>
+      <table id="table_fields"
+           data-toggle="table"
            data-height="300"
            onClickRow="true">
         <thead>
